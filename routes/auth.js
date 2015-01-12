@@ -2,6 +2,7 @@ var router = require("express").Router(),
     app = require("../lib/app").getInstance(),
     passportLocal = require('passport-local'),
     passportGoogle = require('passport-google-oauth'),
+    passportWindows = require('passport-windowsauth'),
     passportGithub = require('passport-github').Strategy,
     tools = require("../lib/tools");
 
@@ -26,6 +27,22 @@ router.get("/auth/github/callback", passport.authenticate('github', {
   successRedirect: '/auth/done',
   failureRedirect: '/login'
 }));
+
+router.get('/windowsauth', passport.authenticate('WindowsAuthentication', { successRedirect: '/auth/done', failureFlash: true }));
+
+if (auth.windows.enabled)
+{
+  passport.use(new passportWindows(
+    function(profile, done){
+      var user = {
+        displayName: profile.id,
+        email: profile.id + auth.windows.emaildomain
+      };
+      usedAuthentication("windows");
+      return done(null, user);
+    }
+  ));
+}
 
 if (auth.google.enabled) {
   passport.use(new passportGoogle.OAuth2Strategy({
@@ -134,6 +151,9 @@ function _getLogin(req, res) {
   }
 
   res.locals.errors = req.flash();
+
+  if (auth.windows.enabled)
+    res.redirect('/windowsauth');
 
   res.render('login', {
     title: app.locals.config.get("application").title,

@@ -35,6 +35,11 @@ if (program.hashString) {
   process.exit(0);
 }
 
+if (!program.config && process.env.IISNODE_VERSION) {
+  // default to iis.yaml if we are running under iisnode
+  program.config = 'iis.yaml';
+}
+
 if (!program.config || !fs.existsSync(program.config)) {
   program.help();
   process.exit(-1);
@@ -86,7 +91,7 @@ function start() {
     listenAddr = "localhost";
   }
 
-  http.createServer(app).listen(config.get("server").port, listenAddr, function() {
+  http.createServer(app).listen(process.env.PORT || config.get("server").port, listenAddr, function() {
     console.log((new Date()) + " - Jingo%sserver v%s listening on port %s", config.get("server").localOnly ? " (local) " : " ", program.version(), config.get("server").port);
   });
 
