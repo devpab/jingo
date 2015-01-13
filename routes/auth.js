@@ -150,7 +150,8 @@ function _getAuthDone(req, res) {
 
 function _getLogin(req, res) {
 
-  req.session.destination = req.query.destination;
+  if (req.query.destination)
+    req.session.destination = req.query.destination;
 
   if (req.session.destination == '/login') {
     req.session.destination = '/';
