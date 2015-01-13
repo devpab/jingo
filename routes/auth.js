@@ -32,11 +32,17 @@ router.get('/windowsauth', passport.authenticate('WindowsAuthentication', { succ
 
 if (auth.windows.enabled)
 {
-  passport.use(new passportWindows(
+  passport.use(new passportWindows({
+    ldap: {
+      url:             auth.windows.ldapurl,
+      base:            auth.windows.ldapbase,
+      bindDN:          auth.windows.ldapbindDN,
+      bindCredentials: auth.windows.ldapbindCredentials
+    }},
     function(profile, done){
       var user = {
-        displayName: profile.id,
-        email: profile.id + auth.windows.emaildomain
+        displayName: profile.displayName,
+        email: profile.emails[0].value
       };
       usedAuthentication("windows");
       return done(null, user);
