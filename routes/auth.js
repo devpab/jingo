@@ -2,7 +2,6 @@ var router = require("express").Router(),
     app = require("../lib/app").getInstance(),
     passportLocal = require('passport-local'),
     passportGoogle = require('passport-google-oauth'),
-    passportWindows = require('passport-windowsauth'),
     passportGithub = require('passport-github').Strategy,
     tools = require("../lib/tools");
 
@@ -32,6 +31,7 @@ router.get('/windowsauth', passport.authenticate('WindowsAuthentication', { succ
 
 if (auth.windows.enabled)
 {
+  var passportWindows = require('passport-windowsauth');
   passport.use(new passportWindows({
     ldap: {
       url:             auth.windows.ldapurl,
