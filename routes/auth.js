@@ -42,7 +42,7 @@ if (auth.windows.enabled)
     function(profile, done){
       var user = {
         displayName: profile.displayName,
-        email: profile.emails[0].value
+        email: (profile.emails && profile.emails.length > 0) ? profile.emails[0].value : ""
       };
       usedAuthentication("windows");
       return done(null, user);
