@@ -161,11 +161,12 @@ function _getLogin(req, res) {
 
   if (auth.windows.enabled)
     res.redirect('/windowsauth');
-
-  res.render('login', {
-    title: app.locals.config.get("application").title,
-    auth: auth
-  });
+  else {
+    res.render('login', {
+      title: app.locals.config.get("application").title,
+      auth: auth
+    });
+  }
 }
 
 module.exports = router;
