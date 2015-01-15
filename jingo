@@ -36,8 +36,8 @@ if (program.hashString) {
 }
 
 if (!program.config && process.env.IISNODE_VERSION) {
-  // default to iis.yaml if we are running under iisnode
-  program.config = 'iis.yaml';
+  // default to config.yaml if we are running under iisnode
+  program.config = 'config.yaml';
 }
 
 if (!program.config || !fs.existsSync(program.config)) {
