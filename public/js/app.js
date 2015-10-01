@@ -13,6 +13,7 @@
           qs, hl = null;
 
       if (location.search !== "") {
+        $("input[name=term]").focus();
         qs = $.map(location.search.substr(1).split("&"), function(kv) {
           kv = kv.split("=");
           return { k: kv[0], v: decodeURIComponent(kv[1]) };
@@ -47,9 +48,9 @@
 
       if ($(".tools > ul > li").length > 0) {
         var $pah = $("<li class=\"tools-handle\">Tools</li>");
-        var pahTo;
+        var pahTo, bodyPadding = $('body').css('padding-top');
         $pah.on("mouseover", function() {
-          $tools.animate({"margin-top": "-20px"});
+          $tools.animate({"margin-top": bodyPadding == "40px" ? "0" : "-20"});
           $pah.slideUp();
         });
         $tools.on("mouseenter", function() {

@@ -12,13 +12,31 @@ function _getSearch(req, res) {
       record;
 
   res.locals.matches = [];
-  res.locals.term = req.query.term.trim();
+
+  if (req.query.term) {
+    res.locals.term = req.query.term.trim();
+  } else {
+    res.locals.term = "";
+  }
+
+  if (res.locals.term.length == 0) {
+    renderResults();
+    return;
+  }
 
   if (res.locals.term.length < 2) {
 
     res.locals.warning = "Search string is too short.";
     renderResults();
   } else {
+
+    try {
+      new RegExp(res.locals.term);
+    } catch(e) {
+      res.locals.warning = "The format of the search string is invalid.";
+      renderResults();
+      return;
+    }
 
     models.pages.findStringAsync(res.locals.term).then(function(items) {
 
