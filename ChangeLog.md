@@ -1,3 +1,17 @@
+Version 1.4.1, October 17th, 2015
+=================================
+
+- Fixes #68, CSS support for markdown tables
+- Removes deprecated `licenses` object in packages.json
+
+Version 1.4.0, October 11th, 2015
+=================================
+
+- Fixes a bug on header rendering (closes #93)
+- Removes iconv and uses the transliteration module (finally!)
+
+The version is coded 1.4.0 because removing iconv may create some regression of old installations.
+
 Version 1.3.1, October 4th, 2015
 =================================
 
